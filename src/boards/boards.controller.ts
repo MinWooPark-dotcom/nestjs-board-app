@@ -2,9 +2,10 @@
 // 라우팅 컨트롤러는 어떤 컨트롤러가 어떠한 요청을 받는지에 대해 제어합니다.
 // 컨트롤러에 둘 이상의 경로가 있을 수 있으며, 서로 다른 작업을 수행하도록 할 수 있습니다.
 
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Board } from './boards.model';
 import { BoardsService } from './boards.service';
+import { CreateBoardDto } from './dto/create-board.dto';
 
 // 컨트롤러를 생성하기 위해 클래스와 데코레이터를 사용합니다.
 // 데코레이터는 요청을 컨트롤러에 연결하여 Nest가 라우팅 맵을 만들 수 있도록 합니다.
@@ -27,10 +28,12 @@ export class BoardsController {
   }
 
   @Post()
-  createBoard(
-    @Body('title') title: string,
-    @Body('description') description: string,
-  ): Board { 
-    return this.boardsService.createBoard(title, description);
+  createBoard(@Body() createBoardDto: CreateBoardDto): Board {
+    return this.boardsService.createBoard(createBoardDto);
+  }
+
+  @Get('/:id')
+  getBoardById(@Param('id') id: string): Board {
+    return this.boardsService.getBoardById(id);
   }
 }
