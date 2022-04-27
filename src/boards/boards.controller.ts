@@ -2,8 +2,8 @@
 // 라우팅 컨트롤러는 어떤 컨트롤러가 어떠한 요청을 받는지에 대해 제어합니다.
 // 컨트롤러에 둘 이상의 경로가 있을 수 있으며, 서로 다른 작업을 수행하도록 할 수 있습니다.
 
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { Board } from './boards.model';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Board, BoardStatus } from './boards.model';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 
@@ -40,5 +40,13 @@ export class BoardsController {
   @Delete('/:id')
   deleteBoard(@Param('id') id: string): void {
     this.boardsService.deleteBoard(id);
+  }
+
+  @Patch('/:id/status')
+  updateBoardStatus(
+    @Param('id') id: string,
+    @Body('status') status: BoardStatus,
+  ) {
+    return this.boardsService.updateBoardStatus(id, status);
   }
 }
