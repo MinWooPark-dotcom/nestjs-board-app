@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Board } from './boards.model';
+import { Board, BoardStatus } from './boards.model';
+import { v1 as uuid } from 'uuid';
 
 @Injectable() // 다른 컴포넌트에서 이 service릂 사용할 수 있게(Injectable) 만들어 줌
 export class BoardsService {
@@ -12,5 +13,17 @@ export class BoardsService {
 
   getAllBoards(): Board[] {
     return this.boards;
+  }
+
+  createBoard(title: string, description: string) {
+    const board: Board = {
+      id: uuid(),
+      title,
+      description,
+      status: BoardStatus.PUBLIC,
+    };
+
+    this.boards.push(board);
+    return board;
   }
 }
