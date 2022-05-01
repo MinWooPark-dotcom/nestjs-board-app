@@ -5,6 +5,7 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardsRepository } from './boards.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
+import { User } from 'src/auth/user.entity';
 
 @Injectable() // 다른 컴포넌트에서 이 service릂 사용할 수 있게(Injectable) 만들어 줌
 export class BoardsService {
@@ -18,8 +19,8 @@ export class BoardsService {
   // 서비스에서 만든 메서드는 컨트롤러에서 가져다 씀
   // 실제 비즈니스 로직은 service에서 작성
 
-  createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardsRespository.createBoard(createBoardDto);
+  createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {
+    return this.boardsRespository.createBoard(createBoardDto, user);
   }
 
   async getAllBoards(): Promise<Board[]> {
