@@ -33,6 +33,9 @@ export class AuthController {
   @Post('/test')
   @UseGuards(AuthGuard())
   test(@GetUser() user: User) {
-    console.log('🚀 ~ file: auth.controller.ts ~ line 34 ~ AuthController ~ test ~ user', user)
+    console.log(
+      '🚀 ~ file: auth.controller.ts ~ line 34 ~ AuthController ~ test ~ user',
+      user,
+    );
   }
 }

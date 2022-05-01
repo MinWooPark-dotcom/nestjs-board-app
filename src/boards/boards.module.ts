@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardsRepository } from './boards.repository';
 import BoardsController from './boards.controller';
 import { BoardsService } from './boards.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 // 모듈은 @Module () 데코레이터로 주석이 달린 클래스입니다.
 // @Module () 데코레이터는 Nest가 애플리케이션 구조를 구성하는 데 사용하는 메타 데이터를 제공합니다.
 @Module({
-  imports: [TypeOrmModule.forFeature([BoardsRepository])],
+  imports: [TypeOrmModule.forFeature([BoardsRepository]), AuthModule],
   controllers: [BoardsController],
   //프로바이더는 Nest의 기본 개념입니다.
   // 대부분의 기본 Nest 클래스는 서비스, 리포지토리, 팩토리, 헬퍼등 프로바이더로 취급될 수 있습니다.

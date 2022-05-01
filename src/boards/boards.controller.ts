@@ -11,9 +11,11 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Board } from './board.entity';
 import { BoardStatus } from './boards-status-enum';
 import { BoardsService } from './boards.service';
@@ -23,6 +25,7 @@ import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe'
 // 컨트롤러를 생성하기 위해 클래스와 데코레이터를 사용합니다.
 // 데코레이터는 요청을 컨트롤러에 연결하여 Nest가 라우팅 맵을 만들 수 있도록 합니다.
 @Controller('boards') // Controller는 인자로 경로를 받음
+@UseGuards(AuthGuard())
 export default class BoardsController {
   // 핸들러는 @Get, @Post, @Delete 등과 같은 데코레이터로 장식 된 컨트롤러 클래스 내의 단순한 메서드입니다.
   // 위와 같은 @Get() Http 요청 메소드 데코레이터는 Nest에 HTTP 요청에 대한 특정 엔드 포인트에 대한 핸들러를 생성하도록 지시합니다.
