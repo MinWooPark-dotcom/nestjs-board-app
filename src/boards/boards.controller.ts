@@ -7,6 +7,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -32,19 +33,23 @@ export default class BoardsController {
   // 핸들러는 @Get, @Post, @Delete 등과 같은 데코레이터로 장식 된 컨트롤러 클래스 내의 단순한 메서드입니다.
   // 위와 같은 @Get() Http 요청 메소드 데코레이터는 Nest에 HTTP 요청에 대한 특정 엔드 포인트에 대한 핸들러를 생성하도록 지시합니다.
   // Service에서 정의한 메서드를 가져다 씀
+  private logger = new Logger('BoardsController');
   // 접근 제한자 private을 생성자 파라미터안에 선언하면 암묵적으로 클래스 프로퍼티로 선언 됨
   constructor(private boardsService: BoardsService) {}
   @Post()
   @UsePipes(ValidationPipe)
   createBoard(
-    @Body() CreateBoardDto: CreateBoardDto,
+    @Body() createBoardDto: CreateBoardDto,
     @GetUser() user: User,
   ): Promise<Board> {
-    return this.boardsService.createBoard(CreateBoardDto, user);
+    this.logger.verbose(`User ${user.username} creating a new board. 
+    Payload: ${JSON.stringify(createBoardDto)} `);
+    return this.boardsService.createBoard(createBoardDto, user);
   }
 
   @Get()
   getAllBoards(@GetUser() user: User): Promise<Board[]> {
+    this.logger.verbose(`User ${user.username} trying to get all boards`);
     return this.boardsService.getAllBoards(user);
   }
 
@@ -54,8 +59,11 @@ export default class BoardsController {
   }
 
   @Delete('/:id')
-  deleteBoardById(@Param('id', ParseIntPipe) id): Promise<void> {
-    return this.boardsService.deleteBoard(id);
+  deleteBoard(
+    @Param('id', ParseIntPipe) id,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.boardsService.deleteBoard(id, user);
   }
 
   @Patch('/:id/status')
