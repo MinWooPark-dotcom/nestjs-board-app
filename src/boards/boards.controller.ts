@@ -36,13 +36,16 @@ export default class BoardsController {
   constructor(private boardsService: BoardsService) {}
   @Post()
   @UsePipes(ValidationPipe)
-  createBoard(@Body() CreateBoardDto: CreateBoardDto, @GetUser() user: User): Promise<Board> {
+  createBoard(
+    @Body() CreateBoardDto: CreateBoardDto,
+    @GetUser() user: User,
+  ): Promise<Board> {
     return this.boardsService.createBoard(CreateBoardDto, user);
   }
 
   @Get()
-  getAllBoards(): Promise<Board[]> {
-    return this.boardsService.getAllBoards();
+  getAllBoards(@GetUser() user: User): Promise<Board[]> {
+    return this.boardsService.getAllBoards(user);
   }
 
   @Get('/:id')
